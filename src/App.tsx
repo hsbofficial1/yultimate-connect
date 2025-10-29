@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
@@ -19,47 +20,70 @@ import Leaderboard from "./pages/Leaderboard";
 import Children from "./pages/Children";
 import Sessions from "./pages/Sessions";
 import Attendance from "./pages/Attendance";
+import Settings from "./pages/Settings";
+import Help from "./pages/Help";
+import About from "./pages/About";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 1,
+    },
+  },
+});
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-            
-            {/* Tournament Routes */}
-            <Route path="/tournaments" element={<Tournaments />} />
-            <Route path="/tournaments/create" element={<ProtectedRoute allowedRoles={['tournament_director', 'admin']}><CreateTournament /></ProtectedRoute>} />
-            <Route path="/tournaments/:id" element={<TournamentDetail />} />
-            <Route path="/tournaments/:id/register-team" element={<ProtectedRoute><RegisterTeam /></ProtectedRoute>} />
-            
-            {/* Team Routes */}
-            <Route path="/teams" element={<ProtectedRoute><TeamsList /></ProtectedRoute>} />
-            
-            {/* Scoring Routes */}
-            <Route path="/scoring/:id" element={<ProtectedRoute allowedRoles={['tournament_director', 'admin', 'volunteer']}><LiveScoring /></ProtectedRoute>} />
-            <Route path="/leaderboards/:id?" element={<Leaderboard />} />
-            
-            {/* Coaching Routes */}
-            <Route path="/children" element={<ProtectedRoute allowedRoles={['coach', 'program_manager', 'admin']}><Children /></ProtectedRoute>} />
-            <Route path="/sessions" element={<ProtectedRoute allowedRoles={['coach', 'program_manager', 'admin']}><Sessions /></ProtectedRoute>} />
-            <Route path="/attendance" element={<ProtectedRoute allowedRoles={['coach', 'program_manager', 'admin']}><Attendance /></ProtectedRoute>} />
-            
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AuthProvider>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/help" element={<Help />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy" element={<Privacy />} />
+              
+              {/* Protected Routes */}
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+              
+              {/* Tournament Routes */}
+              <Route path="/tournaments" element={<Tournaments />} />
+              <Route path="/tournaments/create" element={<ProtectedRoute allowedRoles={['tournament_director', 'admin']}><CreateTournament /></ProtectedRoute>} />
+              <Route path="/tournaments/:id" element={<TournamentDetail />} />
+              <Route path="/tournaments/:id/register-team" element={<ProtectedRoute><RegisterTeam /></ProtectedRoute>} />
+              
+              {/* Team Routes */}
+              <Route path="/teams" element={<ProtectedRoute><TeamsList /></ProtectedRoute>} />
+              
+              {/* Scoring Routes */}
+              <Route path="/scoring/:id" element={<ProtectedRoute allowedRoles={['tournament_director', 'admin', 'volunteer']}><LiveScoring /></ProtectedRoute>} />
+              <Route path="/leaderboards/:id?" element={<Leaderboard />} />
+              
+              {/* Coaching Routes */}
+              <Route path="/children" element={<ProtectedRoute allowedRoles={['coach', 'program_manager', 'admin']}><Children /></ProtectedRoute>} />
+              <Route path="/sessions" element={<ProtectedRoute allowedRoles={['coach', 'program_manager', 'admin']}><Sessions /></ProtectedRoute>} />
+              <Route path="/attendance" element={<ProtectedRoute allowedRoles={['coach', 'program_manager', 'admin']}><Attendance /></ProtectedRoute>} />
+              
+              {/* 404 */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AuthProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

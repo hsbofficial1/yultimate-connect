@@ -243,15 +243,46 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t py-12">
+      <footer className="border-t py-12 bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <h3 className="font-bold mb-4">Product</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link to="/tournaments" className="hover:text-primary">Tournaments</Link></li>
+                <li><Link to="/leaderboards" className="hover:text-primary">Leaderboards</Link></li>
+                <li><Link to="/dashboard" className="hover:text-primary">Dashboard</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold mb-4">Company</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link to="/about" className="hover:text-primary">About Us</Link></li>
+                <li><Link to="/help" className="hover:text-primary">Help Center</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold mb-4">Legal</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link to="/terms" className="hover:text-primary">Terms of Service</Link></li>
+                <li><Link to="/privacy" className="hover:text-primary">Privacy Policy</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold mb-4">Connect</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="mailto:support@yultimate.org" className="hover:text-primary">Support</a></li>
+                <li><a href="mailto:contact@yultimate.org" className="hover:text-primary">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t">
             <div className="flex items-center gap-2">
               <Target className="h-6 w-6 text-primary" />
               <span className="font-bold">Y-Ultimate</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              © 2024 Y-Ultimate. All rights reserved.
+              © 2025 Y-Ultimate. All rights reserved.
             </p>
           </div>
         </div>
